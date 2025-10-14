@@ -1,16 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaPenNib, FaBookOpen, FaArrowRight } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
   const [visiblePosts, setVisiblePosts] = useState(3);
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
-  const posts = Array.from({ length: 12 }, (_, i) => ({
-    id: i + 1,
-    title: `Sample Blog Post ${i + 1}`,
-    image: `https://picsum.photos/400/200?random=${i + 1}`,
-    excerpt:
-      "This is a short preview of the blog post content. Click below to read more.",
-  }));
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const res = await fetch("https://blog-app-oeay.onrender.com/api/posts");
+        const data = await res.json();
+        setPosts(data);
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPosts();
+  }, []);
 
   const loadMore = () => {
     setVisiblePosts((prev) => prev + 3);
@@ -28,7 +40,10 @@ export default function Home() {
           <p className="mt-4 text-lg md:text-xl text-blue-100">
             Share your thoughts, explore ideas, and connect with the world.
           </p>
-          <button className="mt-6 px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg shadow hover:bg-gray-100 transition">
+          <button
+            onClick={() => navigate("/dashboard")}
+            className="mt-6 px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg shadow hover:bg-gray-100 transition"
+          >
             Start Reading
           </button>
         </div>
@@ -41,27 +56,36 @@ export default function Home() {
           Recent Posts
         </h2>
 
-        <div className="grid md:grid-cols-3 gap-8">
-          {posts.slice(0, visiblePosts).map((post) => (
-            <div
-              key={post.id}
-              className="bg-white rounded-lg shadow hover:shadow-lg transition p-6"
-            >
-              <img
-                src={post.image}
-                alt={post.title}
-                className="w-full h-40 object-cover rounded-md mb-4"
-              />
-              <h3 className="text-lg font-semibold text-gray-800">
-                {post.title}
-              </h3>
-              <p className="text-gray-600 mt-2">{post.excerpt}</p>
-              <button className="mt-4 flex items-center gap-2 text-blue-600 hover:underline">
-                Read More <FaArrowRight />
-              </button>
-            </div>
-          ))}
-        </div>
+        {loading ? (
+          <p className="text-gray-600">Loading posts...</p>
+        ) : posts.length === 0 ? (
+          <p className="text-gray-600">No posts available yet.</p>
+        ) : (
+          <div className="grid md:grid-cols-3 gap-8">
+            {posts.slice(0, visiblePosts).map((post) => (
+              <div
+                key={post._id}
+                className="bg-white rounded-lg shadow hover:shadow-lg transition p-6 cursor-pointer"
+                onClick={() => navigate(`/fullpost/${post._id}`)}
+              >
+                <img
+                  src={post.image || `https://picsum.photos/400/200?random=${post._id}`}
+                  alt={post.title || "Blog post image"}
+                  className="w-full h-40 object-cover rounded-md mb-4"
+                />
+                <h3 className="text-lg font-semibold text-gray-800">
+                  {post.title || "Untitled Post"}
+                </h3>
+                <p className="text-gray-600 mt-2">
+                  {post.excerpt || post.content?.slice(0, 80) + "..."}
+                </p>
+                <button className="mt-4 flex items-center gap-2 text-blue-600 hover:underline">
+                  Read More <FaArrowRight />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* Load More Button */}
         {visiblePosts < posts.length && (
