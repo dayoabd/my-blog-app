@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const VerifyEmail = () => {
-  const { token } = useParams(); 
+  // const {u}
+  const userid = localStorage.getItem("user._id");
+  // const userid = localStorage.getItem(user._id)
   const [status, setStatus] = useState("Verifying your email...");
   const [verified, setVerified] = useState(false);
   const navigate = useNavigate();
@@ -11,7 +13,7 @@ const VerifyEmail = () => {
     const verify = async () => {
       try {
         const response = await fetch(
-          `https://blog-app-oeay.onrender.com/api/verify-email/${token}`,
+          `https://blog-app-oeay.onrender.com/api/verify-email/${userid}`,
           {
             method: "GET",
             headers: { "Content-Type": "application/json" },
@@ -34,7 +36,7 @@ const VerifyEmail = () => {
     };
 
     verify();
-  }, [token]);
+  });
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">

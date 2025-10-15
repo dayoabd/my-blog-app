@@ -1,17 +1,17 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import Signup from "../src/Register/Signup";
-import All from "../src/component/All";
-import VerifyInfo from "../src/Register/VerifyInfo";
-import VerifyEmail from "../src/Register/VerifyEmail";
-import Login from "../src/Register/Login";
-import Profile from "../src/component/Profile";
+import Signup from "./Register/Signup";
+import All from "./component/All";
+import VerifyInfo from "./Register/VerifyInfo";
+import VerifyEmail from "./Register/VerifyEmail";
+import Login from "./Register/Login";
+import Profile from "./component/Profile";
 import CreatPost from "./component/CreatePost";
-import ResetPassword from "../src/Register/ResetPassword";
-import DashBoard from "../src/component/DashBoard";
-import Mypost from "../src/component/Mypost";
-import EditProfile from "../src/component/EditProfile";
-import FullPost from "../src/component/FullPost";
-import Dashboard from "../src/component/DashBoard";
+import ResetPassword from "./Register/ResetPassword";
+import DashBoard from "./component/DashBoard";
+import Mypost from "./component/Mypost";
+import EditProfile from "./component/EditProfile";
+import FullPost from "./component/FullPost";
+import Dashboard from "./component/DashBoard";
 
 function App() {
   const isAuthenticated = !!localStorage.getItem("authToken");

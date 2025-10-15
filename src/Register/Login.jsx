@@ -39,7 +39,6 @@ const Login = () => {
 
         if (data.token) {
           localStorage.setItem("authToken", data.token);
-          // ✅ Save the whole user object in one key
           localStorage.setItem("user", JSON.stringify(data.user));
         }
 
