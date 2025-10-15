@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -119,7 +120,7 @@ const Login = () => {
             onClick={() => setShowPassword(!showPassword)}
             className="absolute right-3 top-2.5 text-gray-500 hover:text-gray-700"
           >
-            {showPassword ? "🙈" : "👁️"}
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
           </button>
         </div>
 
@@ -165,14 +166,6 @@ const Login = () => {
         >
           Forgot Password?
         </p>
-
-        {/* Back to signup button */}
-        <button
-          onClick={() => navigate("/All")}
-          className="w-full py-2 bg-gray-200 text-gray-700 font-semibold rounded-lg hover:bg-gray-300 transition"
-        >
-          ⬅ Back to Signup
-        </button>
 
         {/* Forgot Password Modal */}
         {showForgot && (
